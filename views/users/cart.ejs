@@ -1,0 +1,300 @@
+<%- include('../layouts/header.ejs') %>
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span> Shop
+                <span></span> Your Cart
+            </div>
+        </div>
+    </div>
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table shopping-summery text-center clean">
+                            <thead>
+                                <tr class="main-heading">
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%if(locals.cart){%>
+                                    <%for(i=0;i < cart.length; i++){%>
+                                <tr>
+                                    <td class="image product-thumbnail"> <img src="/upload/product/<%= cart[i]?.ProductDetails[0]?.images[0] %>" alt="#"></td>
+                                    <td class="product-des product-name">
+                                        <h5 class="product-name"><a href="shop-product-right.html"><%= cart[i]?.ProductDetails[0]?.name%>"</a></h5>
+                                        <p class="font-xs"><%= cart[i]?.ProductDetails[0]?.description%>"
+                                        </p>
+                                    </td>
+                                    <td class="price" data-title="Price"><span id="<%=cart[i]?.ProductDetails[0]?._id%>price"><%= cart[i]?.ProductDetails[0]?.sale_price%> </span></td>
+                                    <td class="text-center" data-title="Stock">
+                                        <div class="detail-qtyy border radius m-auto">
+                                            <a  class="qty-d"  onclick="changeQuantity('<%=cart[i]?._id%>', '<%=cart[i]?.proId%>', -1, '<%=cart[i]?.ProductDetails[0]?.quantity%>')">
+                                                <i class="fi-rs-angle-small-down"></i>
+                                            </a>
+                                           
+                                            
+                                            <span  class="qty-val" id="<%=cart[i]?.ProductDetails[0]?._id%>"  name="quantity"><%=cart[i]?.quantity%></span>
+                                            <a  class="qty-u" onclick="changeQuantity('<%=cart[i]?._id%>', '<%=cart[i]?.proId%>', 1 , '<%=cart[i]?.ProductDetails[0]?.quantity%>')">
+                                                <i class="fi-rs-angle-small-up"></i>
+                                            </a>
+                                        </div>
+                                        
+                                    </td>
+                                    <td class="text-right" data-title="Cart">
+                                        <span id="<%=cart[i]?.ProductDetails[0]?._id%>pro-total" class="item-total">  <%=parseInt(cart[i]?.ProductDetails[0]?.sale_price)*parseInt(cart[i]?.quantity)%> </span>
+                                    </td>
+                                    <td class="action" data-title="Remove"> <a class="text-muted" onclick="removeFromCart('<%=cart[i]?._id%>', '<%=cart[i]?.proId%>')"><i class="fi-rs-trash"></i></a></td>
+                                </tr>
+                                <%}%>
+                                <%}%>
+                                
+                                <tr>
+                                    <td colspan="6" class="text-end">
+                                        <a href="#" class="text-muted"> <i class="fi-rs-cross-small"></i> Clear Cart</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="cart-action text-end">
+                        <a class="btn  mr-10 mb-sm-15"><i class="fi-rs-shuffle mr-10"></i>Update Cart</a>
+                        <a class="btn "><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
+                    </div>
+                    <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
+                    <div class="row mb-50">
+                        
+                        <div class="col-lg-6 col-md-12">
+                            <div class="border p-md-4 p-30 border-radius cart-totals">
+                                <div class="heading_s1 mb-3">
+                                    <h4>Cart Totals</h4>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="cart_total_label">Cart Subtotal</td>
+                                                <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">₹<span class="final-amount">
+                                                    <%if(locals.total){%>
+                                                        <%=total%>
+                                                            <%}%></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="cart_total_label">Shipping</td>
+                                                <td class="cart_total_amount"> <i class="ti-gift mr-5"></i> Free Shipping</td>
+                                            </tr>
+                                            <tr>
+                                            <td class="cart_total_label">Total</td>
+                                            <td class="cart_total_amount">
+                                                <strong>
+                                                    <span class="font-xl fw-900 text-brand">₹<span class="final-amt">
+                                                        <% if(locals.total) { %>
+                                                            <%=total%>
+                                                        <% } %>
+                                                    </span></span>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <form action="/check-out" method="post">
+                                    <% if(locals.total) { %>
+                                        <input type="hidden" name="total" id="totalInput" value="<%=total%>" />
+                                    <% } %>
+                                
+                                    <% if (cart.length === 0) { %>
+                                        <!-- Display a message or any other content when the cart is empty -->
+                                        <p>Your cart is empty.</p>
+                                    <% } else { %>
+                                        <!-- Display the "proceed to checkout" button -->
+                                        <button type="submit" class="btn btn-success w-100 shadow-0 mb-2">Proceed to Checkout</button>
+                                    <% } %>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<style>
+    .detail-qtyy {
+  max-width: 80px;
+  padding: 9px 20px;
+  position: relative;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.detail-qtyy > a {
+  font-size: 16px;
+  position: absolute;
+  right: 8px;
+  color: #707070;
+}
+
+.detail-qtyy > a:hover {
+  color: #088178;
+}
+
+.detail-qtyy > a.qty-u {
+  top: 0;
+}
+
+.detail-qtyy > a.qty-d {
+  bottom: 0;
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    function changeQuantity(userId, proId, count, quantity) {
+        const qty = document.getElementById(proId)
+        if (qty.textContent > 1 || count == 1) {
+
+            if (parseInt(qty.textContent) + 1 > quantity && count == 1) {
+                Swal.fire({
+                    title: 'STOCK!',
+                    text: 'Product is out of stock.',
+                    icon: 'error',
+                    timer: 5000
+                })
+            } else {
+                qty.textContent = Number(qty.textContent) + count
+                const sub = document.getElementById(`${proId}pro-total`)
+                console.log(sub)
+                const subPrice = document.getElementById(`${proId}price`)
+                console.log(subPrice)
+                sub.textContent = qty.textContent * subPrice.textContent
+                console.log(sub.textContent)
+
+                const items = document.querySelectorAll(".item-total")
+                console.log(items)
+                const final = document.querySelector(".final-amount")
+                const fiamt = document.querySelector(".final-amt")
+                console.log(final)
+                // let finalamount = final.innerHTML;
+                // alert(finalamount,'finalfinal')
+                // console.log(finalamount,'final');
+
+                let amt = 0
+                items.forEach(item => {
+                    amt += Number(item.innerText)
+                })
+                final.innerText = amt
+                fiamt.innerText = amt
+                let quantity = qty.textContent - count
+
+                $.ajax({
+                    url: "/change-quantity",
+                    method: 'post',
+                    data: {
+                        userId: userId,
+                        proId: proId,
+                        count: count,
+                        quantity: quantity,
+                    },
+                    success: (response) => {
+
+                        console.log(response,"response")
+
+                        if (response.status == true) {
+
+                            var totalInput = document.getElementsByName('total')[0];
+                            totalInput.value = final.innerText
+                            // alert(totalInput.value,'totalInput.value')
+                            console.log(totalInput.value, 'totalInput.textcontent');
+                            let Total = totalInput.value
+                            // location.reload();
+                            hello(Total)
+                        } else {
+
+                            let total = parseInt(quantity) + parseInt(count);
+                            const h = document.getElementById(proId).textContent = total;
+
+                        }
+                    }
+                })
+            }
+        }
+        function hello(total) {
+
+            $.ajax({
+                url: "/change-quantity2",
+                method: 'post',
+                data: {
+                    finalAmount: total
+                },
+            })
+        }
+    }
+</script>
+
+<script>
+    function removeFromCart(userId, proId) {
+        console.log('removeFromCart')
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/removeFromCart',
+                    method: 'post',
+                    data: {
+                        userId: userId,
+                        proId: proId,
+                    },
+                    success: (response) => {
+                        if (response == true) {
+                            var totalInput = document.getElementsByName('total')[0];
+                            var totalValue = totalInput.value;
+
+                            //alert(totalValue, 'totalInput.value')
+                            console.log(totalValue, 'totalInput.value');
+                            hello(totalValue)
+                            location.reload()
+
+                        } else {
+                            location.reload()
+                        }
+
+                    }
+                })
+                function hello(total) {
+
+                    $.ajax({
+                        url: "/change-quantity2",
+                        method: 'post',
+                        data: {
+                            finalAmount: total
+                        },
+                    })
+                }
+
+            }
+        })
+    }
+</script>
+
+
+
+<%- include('../layouts/footer.ejs') %>
