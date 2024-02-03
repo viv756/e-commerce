@@ -23,7 +23,7 @@ const loadhome = async (req, res) => {
       log: req.session.isLoggedIn,banners
     });
   } catch (error) {
-    console.log(error.message);
+   res.render("404")
   }
 };
 
@@ -35,7 +35,7 @@ const loadRegister = async (req, res) => {
     }
     res.render("registration", { message: false });
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -45,9 +45,10 @@ const otpPage = async (req, res) => {
   try {
     res.render("otp", { userId: req.query.id, message: false });
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
+
 // User Insertion
 const insertUser = async (req, res) => {
   try {
@@ -110,14 +111,14 @@ const insertUser = async (req, res) => {
     if (userData) {
       const otp = randomstring.generate({ length: 4, charset: "numeric" });
       objj.OTP = otp;
-      console.log(objj.OTP);
+      
       await sendOTPVerificationEmail(name, email, otp);
       res.redirect(`/otp?id=${userData.id}`);
     } else {
       res.render("registration", { message: "Your regisration is failed" });
     }
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -127,7 +128,7 @@ const securePassword = async (password) => {
     const passwordHash = await bcrypt.hash(password, 10);
     return passwordHash;
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
