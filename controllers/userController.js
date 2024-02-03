@@ -187,17 +187,14 @@ const resendOTP = async (req, res) => {
   try {
     const data = req.session.newUser;
     const userId = req.query.userId.trim();
-    console.log(userId);
     const otp = randomstring.generate({ length: 4, charset: "numeric" });
     objj.OTP = otp;
     console.log("Resend OTP :", objj.OTP);
     await sendOTPVerificationEmail(data.name, data.email, otp);
     const userData = await User.findOne({ _id: userId });
-
-    console.log(userData);
     res.redirect(`otp?id=${userData.id}`);
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -210,7 +207,6 @@ const validateOTP = async (req, res) => {
     if (objj.OTP === Newotp) {
       delete objj.OTP;
       const id = req.body.userId.trim();
-
       const updateInfo = await User.updateOne({ _id: id }, { $set: { is_verified: 1 } });
       res.render("login", { message: "Successfully Registered" });
     }

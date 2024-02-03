@@ -60,11 +60,7 @@ const userScheme = new mongoose.Schema({
               type: String
      
            }
-     
-     
         }],
-  
-  
         referal: {
            type: String
         },
