@@ -215,12 +215,11 @@ const validateOTP = async (req, res) => {
       res.render("login", { message: "Successfully Registered" });
     }
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
 // rendering the login page
-
 const loginLoad = async (req, res) => {
   try {
     if (req.session.user) {
@@ -229,7 +228,7 @@ const loginLoad = async (req, res) => {
       res.render("login", { message: false });
     }
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -310,7 +309,7 @@ const verifyLogin = async (req, res) => {
       res.render("login", { message: "Email and Password is incorrect" });
     }
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -320,7 +319,7 @@ const loadLogin = async (req, res) => {
     const banners = await Banner.find();
     res.render("userhome", { log: req.session.isLoggedIn,banners });
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -329,7 +328,7 @@ const logOut = async (req, res, next) => {
     req.session.destroy();
     res.redirect("/");
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
