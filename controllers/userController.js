@@ -14,6 +14,7 @@ const Razorpay = require("razorpay")
 const crypto = require("crypto");
 const easyinvoice = require("easyinvoice");
 const Readable = require('readable')
+
 // load landing-page
 const loadhome = async (req, res) => {
   try {
@@ -31,7 +32,6 @@ const loadRegister = async (req, res) => {
   try {
     if (req.query.id) {
       req.session.referel = req.query.id;
-      console.log(req.session.referel, "sessionnnnn");
     }
     res.render("registration", { message: false });
   } catch (error) {
