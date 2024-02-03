@@ -254,7 +254,6 @@ const verifyLogin = async (req, res) => {
 
       if (req.session.referel) {
         req.session.user = userData;
-        console.log(req.session.referel,'req.session.referel');
         const refererId = req.session.referel;
         const userId = req.session.user;
         const walletUpdateAmount = 200;
