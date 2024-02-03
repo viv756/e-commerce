@@ -357,8 +357,6 @@ const shopLoad = async (req, res) => {
 
 const subCatogary = async (req, res, next) => {
   try {
-   
-
     await Products.find({ category: req.query.cat })
       .lean()
       .then((data) => {
