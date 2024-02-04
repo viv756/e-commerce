@@ -724,12 +724,7 @@ const changePassword = async (req, res) => {
 const newpassword = async (req, res) => {
   try {
     const { oldpassword, newpassword, confirmpassword } = req.body;
-    console.log(req.body, "req.body");
-    console.log(req.session, "session");
-
     const userData = await User.findOne({ _id: req.session.user });
-    console.log(userData);
-    console.log(oldpassword);
     const checkPasswword = await bcrypt.compare(oldpassword, userData.password);
     if (checkPasswword) {
       if (newpassword === confirmpassword) {
@@ -754,15 +749,12 @@ const wallet = (req, res, next) => {
     const userId = req.session.user;
     User.findById(userId).then((data) => {
       data.wallet.reverse();
-
       const itemsperpage = 5;
       const currentpage = parseInt(req.query.page) || 1;
       const startindex = (currentpage - 1) * itemsperpage;
       const endindex = startindex + itemsperpage;
       const totalpages = Math.ceil(data.wallet.length / 5);
       const currentproduct = data.wallet.slice(startindex, endindex);
-      console.log("Current products : ", currentproduct);
-
       res.render("wallet", {
         log: req.session.isLoggedIn,
         data: currentproduct,
@@ -819,7 +811,7 @@ const ShowOrders = async (req, res, next) => {
       log: req.session.isLoggedIn,
     });
   } catch (error) {
- console.log(error.message)
+res.render("404")
   }
 };
 
@@ -863,7 +855,7 @@ const orderDetails = async (req, res, next) => {
       log: req.session.isLoggedIn,
     });
   } catch (error) {
-   console.log(error.message)
+   res.render("404")
   }
 };
 
@@ -906,7 +898,7 @@ const changeStatus = async (req, res, next) => {
     console.log(updatedOrder);
     res.json(true);
   } catch (err) {
-    console.log(err);
+   res.render("404")
     res.json(false);
   }
 };
