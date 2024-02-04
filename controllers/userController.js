@@ -663,7 +663,7 @@ const sendResetPasswordMail = async (name, email, token) => {
       },
     });
     const mailOption = {
-      from: "aswinbrototype@gmail.com",
+      from: "smtpp2002@gmail.com",
       to: email,
       subject: "For Reset password",
       html: "<p>Hyy " + name + ', please click here to <a href="http://127.0.0.1:5000/forget-password?token=' + token + ' "> Reset </a> your password</p>',
@@ -687,10 +687,10 @@ const forgetPassword = async (req, res) => {
     if (tokenData) {
       res.render("reset-password", { user_id: tokenData.id, message: false });
     } else {
-      res.render("users/404", { message: "Token is invalid" });
+      res.render("404", { message: "Token is invalid" });
     }
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -702,7 +702,7 @@ const resetPassword = async (req, res) => {
     await User.findOneAndUpdate({ _id: req.body.user_id }, { $set: { password: secure_password, token: "" } });
     res.redirect("/");
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -716,7 +716,7 @@ const changePassword = async (req, res) => {
     console.log(message, "message");
     res.render("changepassword", { message });
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
