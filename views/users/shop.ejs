@@ -659,7 +659,7 @@
                 // Encode the data as a JSON string and add it as a query parameter
         var encodedData = encodeURIComponent(JSON.stringify(response.data));
         // Redirect to the filtered-products page with data as a query parameter
-        window.location.href = '/filtered-products?data=' + encodedData;// Change '/fi  ltered-products' to your desired route
+        window.location.href = '/filtered-products?data=' + encodedData;// Change '/filtered-products' to your desired route
             },
             error: function (error) {
                 console.error('Error filtering products:', error);

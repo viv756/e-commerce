@@ -332,7 +332,7 @@ const shopLoad = async (req, res) => {
   try {
     if (!req.session.isLoggedIn) {
       res.redirect("/login");
-    } else {
+    } else {  
       await Products.find()
         .lean()
         .then((data) => {
@@ -351,7 +351,7 @@ const shopLoad = async (req, res) => {
         });
     }
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -380,7 +380,7 @@ const subCatogary = async (req, res, next) => {
         console.log(err.message);
       });
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -405,7 +405,7 @@ const priceFilter = async (req, res) => {
       data: filteredProducts
     });
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -449,7 +449,7 @@ const filteredProducts = async (req, res, next) => {
       }
     }
   } catch (error) {
-    console.log(error);
+   res.render("404")
   }
 };
 
