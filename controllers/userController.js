@@ -461,7 +461,7 @@ const searchProd = async (req, res) => {
     })
     res.render("shop", { data, log: req.session.isLoggedIn })
   } catch (error) {
-    console.log(error.message)
+    res.render("404")
   }
 }
 
