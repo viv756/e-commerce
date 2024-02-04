@@ -473,7 +473,7 @@ const profile = async (req, res) => {
       res.render("myprofile", { data, userdata, log: req.session.isLoggedIn });
     });
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -484,7 +484,7 @@ const addressForm = async (req, res, next) => {
       res.render("add-address", { data, log: req.session.isLoggedIn });
     });
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
@@ -514,7 +514,7 @@ const confirmAddress = async (req, res, next) => {
     );
     res.redirect("/address");
   } catch (error) {
-    console.log(error.message);
+   res.render("404")
   }
 };
 
@@ -528,7 +528,7 @@ const editAddress = async (req, res) => {
     const userAddress = profile.address.id(adressId);
     res.render("editaddress", { userAddress, log: req.session.isLoggedIn });
   } catch (error) {
-    console.log(error.message);
+    res.render("404")
   }
 };
 
