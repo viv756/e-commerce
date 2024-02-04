@@ -127,7 +127,6 @@
                         <button class="btn btn-sm" type="button" data-toggle="modal"
                             data-target="#exampleModalCenter"> Your Coupons</button>
                         <br><br>
-
                         <button type="button" class="btn btn-sm" onclick="applyCoupon()"> Apply Coupons</button>
                     </div>
                     <input type="hidden" value="<%=total%>">
@@ -320,10 +319,11 @@ function applyCoupon() {
     content: 'input',
     button: {
       text: 'Apply!', 
-      closeModal: false,
+      closeModal: false, 
     },
   })
   .then(couponCode => {
+    console.log(couponCode)
     if (!couponCode) {
       throw null; // No coupon code provided, so exit without making an AJAX request
     }
@@ -339,8 +339,7 @@ function applyCoupon() {
     .then(response => response.json())
     .then(data => {
       if (data.isValid) {
-      
-        const displayedSum = document.getElementById('totalValue').textContent;
+    const displayedSum = document.getElementById('totalValue').textContent;
     const numericValue = parseFloat(displayedSum.replace(/[^\d.]/g, ''));
     const couponOfferPrice = parseFloat(data.coupon.offerPrice);
     coupon = parseFloat(data.coupon.offerPrice);
@@ -353,21 +352,19 @@ function applyCoupon() {
     const displayedcoupon = document.getElementById('discountAmount');
     displayedcoupon.textContent = couponOfferPrice;
     
-    swal('Coupon Valid!', `Coupon code '${couponCode}' is valid.`);
-
-
+    Swal.fire('Coupon Valid!', `Coupon code '${couponCode}' is valid.`);
       } else {
-        swal('Invalid Coupon', `Coupon code '${couponCode}' is not valid.`);
+        Swal.fire('Invalid Coupon', `Coupon code '${couponCode}' is not valid.`);
       }
     })
     .catch(error => {
       console.error('Error occurred during AJAX request:', error);
-      swal('Error', 'An error occurred while processing your request.', 'error');
+      Swal.fire('Error', 'An error occurred while processing your request.', 'error');
     });
   })
   .catch(error => {
     if (error) {
-      swal('Oh noes!', 'An error occurred!', 'error');
+      Swal.fire('Oh noes!', 'An error occurred!', 'error');
     } else {
       swal.stopLoading();
       swal.close();

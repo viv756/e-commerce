@@ -199,8 +199,7 @@ const updateCoupon = asyncHandler(async (req, res) => {
 const validateCoupon = asyncHandler(async (req, res) => {
     try {
       console.log("entereeeeeeeeeeee");
-      const name = req.body.couponCode;
-  
+      const name = String(req.body.couponCode)
       // Query the database to find the coupon by its name
       const coupon = await Coupon.findOne({ name: name });
   

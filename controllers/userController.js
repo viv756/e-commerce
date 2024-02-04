@@ -898,7 +898,6 @@ const changeStatus = async (req, res, next) => {
     console.log(updatedOrder);
     res.json(true);
   } catch (err) {
-   res.render("404")
     res.json(false);
   }
 };
@@ -928,12 +927,12 @@ const checkout = async (req, res) => {
     const coupon = await Coupons.find({
       minimumAmount:{$lte:req.body.total}
     })
-    console.log(coupon,"cou")
+    // console.log(coupon,"cou")
    const userData = await User.find({ _id: req.session.user })
     if (userData) {
       res.render("check-out", {data:userData,total:req.body.total,coupon,log:req.session.isLoggedIn})
     }
-    console.log(userData,"user")
+    // console.log(userData,"user")
   } catch (error) {
     console.log(error.message)
   }
