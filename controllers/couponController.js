@@ -2,17 +2,13 @@ const asyncHandler = require("express-async-handler");
 const Coupon = require("../models/coupon-model");
 const User = require("../models/userModel");
 
-
 //rendering the coupen add page
 const loadCoupon = asyncHandler(async (req, res) => {
   try {
     const currentPage = "/admin/add-Coupon";
     res.render("addcoupon1", { currentPage });
   } catch (error) {
-    console.log(
-      "Error happence in the coupon controller in the funtion loadCoupon",
-      error
-    );
+    console.log("Error happence in the coupon controller in the funtion loadCoupon", error);
     res.render("404");
   }
 });
@@ -30,16 +26,8 @@ const addCoupon = asyncHandler(async (req, res) => {
     const offerPrice = parseFloat(req.body.offerPrice);
     const minimumAmount = parseFloat(req.body.minimumAmount);
 
-    if (
-      isNaN(offerPrice) ||
-      isNaN(minimumAmount) ||
-      offerPrice < 0 ||
-      minimumAmount < 0 ||
-      offerPrice >= minimumAmount
-    ) {
-      throw new Error(
-        "Invalid offer price or minimum amount And offer price must be less than minimum amount"
-      );
+    if (isNaN(offerPrice) || isNaN(minimumAmount) || offerPrice < 0 || minimumAmount < 0 || offerPrice >= minimumAmount) {
+      throw new Error("Invalid offer price or minimum amount And offer price must be less than minimum amount");
     }
 
     let customExpiryDate = new Date(req.body.expiryDate);
@@ -67,10 +55,7 @@ const addCoupon = asyncHandler(async (req, res) => {
 
     res.redirect("/admin/coupon");
   } catch (error) {
-    console.log(
-      "Error happened in the coupon controller in the function addCoupon",
-      error
-    );
+    console.log("Error happened in the coupon controller in the function addCoupon", error);
     // Handle error, e.g., display an error message to the user
     res.render("404");
   }
@@ -98,10 +83,7 @@ const coupon = asyncHandler(async (req, res) => {
       currentPage,
     });
   } catch (error) {
-    console.log(
-      "Error happence in the coupon controller in the funtion coupon",
-      error
-    );
+    console.log("Error happence in the coupon controller in the funtion coupon", error);
     res.render("404");
   }
 });
@@ -115,14 +97,10 @@ const deleteCoupon = asyncHandler(async (req, res) => {
 
     res.redirect("/admin/coupon");
   } catch (error) {
-    console.log(
-      "Error happence in the coupon controller in the funtion deleteCoupon",
-      error
-    );
+    console.log("Error happence in the coupon controller in the funtion deleteCoupon", error);
     res.render("404");
   }
 });
-
 
 //rendring th edit coupon page
 const editCoupon = asyncHandler(async (req, res) => {
@@ -132,10 +110,7 @@ const editCoupon = asyncHandler(async (req, res) => {
 
     res.render("edit-coupon", { coupon });
   } catch (error) {
-    console.log(
-      "Error happence in the coupon controller in the funtion editCoupon",
-      error
-    );
+    console.log("Error happence in the coupon controller in the funtion editCoupon", error);
     res.render("404");
   }
 });
@@ -149,13 +124,7 @@ const updateCoupon = asyncHandler(async (req, res) => {
     const offerPrice = parseFloat(x.offerPrice);
     const minimumAmount = parseFloat(x.minimumAmount);
 
-    if (
-      isNaN(offerPrice) ||
-      isNaN(minimumAmount) ||
-      offerPrice < 0 ||
-      minimumAmount < 0 ||
-      offerPrice >= minimumAmount
-    ) {
+    if (isNaN(offerPrice) || isNaN(minimumAmount) || offerPrice < 0 || minimumAmount < 0 || offerPrice >= minimumAmount) {
       throw new Error("Invalid offer price or minimum amount");
     }
 
@@ -186,10 +155,7 @@ const updateCoupon = asyncHandler(async (req, res) => {
 
     res.redirect("/admin/coupon");
   } catch (error) {
-    console.log(
-      "Error happened in the coupon controller in the function editCoupon",
-      error
-    );
+    console.log("Error happened in the coupon controller in the function editCoupon", error);
     // Handle error, e.g., display an error message to the user
     res.render("404");
   }
@@ -197,46 +163,43 @@ const updateCoupon = asyncHandler(async (req, res) => {
 
 //chekthe coupon is valid or not
 const validateCoupon = asyncHandler(async (req, res) => {
-    try {
-      console.log("entereeeeeeeeeeee");
-      const name = String(req.body.couponCode)
-      // Query the database to find the coupon by its name
-      const coupon = await Coupon.findOne({ name: name });
-  
-      if (coupon) {
-        const user = await User.findById(req.session.user);
-        const userId = {
-          userId: user._id,
-        };
-  
-        coupon.user.push(userId);
-        await coupon.save();
-        console.log("saved");
-        // If a coupon with the provided name is found, send it as a JSON response
-        res.status(200).json({
-          isValid: true,
-          coupon: coupon, // Include the coupon data in the response
-        });
-      } else {
-        // console.log('errorr on notfound');
-        // If no coupon with the provided name is found, send an error response
-        res.status(404).json({
-          isValid: false,
-          error: "Coupon not found",
-        });
-      }
-    } catch (error) {
-      console.log(
-        "Error happened in the coupon controller in the function validateCoupon",
-        error
-      );
-      res.status(500).json({
+  try {
+    console.log("entereeeeeeeeeeee");
+    const name = String(req.body.couponCode);
+    // Query the database to find the coupon by its name
+    const coupon = await Coupon.findOne({ name: name });
+
+    if (coupon) {
+      const user = await User.findById(req.session.user);
+      const userId = {
+        userId: user._id,
+      };
+
+      coupon.user.push(userId);
+      await coupon.save();
+      console.log("saved");
+      // If a coupon with the provided name is found, send it as a JSON response
+      res.status(200).json({
+        isValid: true,
+        coupon: coupon, // Include the coupon data in the response
+      });
+    } else {
+      // console.log('errorr on notfound');
+      // If no coupon with the provided name is found, send an error response
+      res.status(404).json({
         isValid: false,
-        error: "An error occurred while processing your request",
+        error: "Coupon not found",
       });
     }
+  } catch (error) {
+    console.log("Error happened in the coupon controller in the function validateCoupon", error);
+    res.status(500).json({
+      isValid: false,
+      error: "An error occurred while processing your request",
+    });
+  }
 });
-  
+
 module.exports = {
   validateCoupon,
   loadCoupon,
@@ -244,5 +207,5 @@ module.exports = {
   coupon,
   deleteCoupon,
   editCoupon,
-  updateCoupon
-}
+  updateCoupon,
+};
